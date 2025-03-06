@@ -15,6 +15,26 @@
 <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
 <script>
     var player = videojs('my-video');
+
+    // تطبيق "الطريقة X" لتحديد مدة الفيديو
+    player.ready(function() {
+        var durationInSeconds = 7200; // حدد المدة الزمنية بالثواني (مثلاً: ساعتين = 7200 ثانية)
+
+        // ضبط مدة الفيديو
+        Object.defineProperty(player, 'duration', {
+            get: function () {
+                return durationInSeconds;
+            }
+        });
+
+        // منع التوقف بعد 5 دقائق عن طريق إعادة التحميل
+        player.on('timeupdate', function() {
+            if (player.currentTime() >= (durationInSeconds - 10)) {
+                player.currentTime(0);
+                player.play();
+            }
+        });
+    });
 </script>
 
 </body>
